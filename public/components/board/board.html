@@ -1,0 +1,55 @@
+<div id="board" class="card-container">
+    <div ng-repeat="peripheral in peripherals" class="card" ng-click="show($event)">
+        <div class="card-header">
+            <span>{{peripheral.name}}</span>
+        </div>
+        <div class="card-content">
+            <div class="row">
+                <div class="label">
+                    RSSI
+                </div>
+                <div class="content">
+                    {{peripheral.rssi}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="label">
+                    MAC
+                </div>
+                <div class="content">
+                    {{peripheral.mac}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="label">
+                    Protocol
+                </div>
+                <div class="content">
+                    {{peripheral.protocol}}
+                </div>
+            </div>
+            <div class="row content-detail">
+                <i class="fa fa-refresh button-flat" ng-click="discover(peripheral, $event);"></i> Discover
+                <div ng-repeat="char in peripheral.chars" class="row">
+                    {{char.name || char.uuid}}<input ng-attr-id="peripheral.id + '_' + char.name" type="checkbox" ng-model="char.active" ng-change="active(char, peripheral)"><label ng-attr-for="peripheral.id + '_' + char.name">
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <span class="button-flat" ng-click="connected(peripheral)">{{peripheral.connected ? 'DISCONNECT' : 'CONNECT'}}</span>
+        </div>
+    </div>
+</div>
+<div class="scan-button">
+    <i class="fa fa-bluetooth-b"></i>
+</div>
+<div class="scan-modal">
+    <div class="header">
+        <i class="fa fa-refresh button-flat" ng-click="scan();"></i>{{scanningStatus}}
+    </div>
+    <ul>
+        <li ng-repeat="device in discovered">
+            <i class="fa fa-plus button-flat" ng-click="add(device);"></i>{{device.name}}<span class="detail">({{device.mac}})</span>
+        </li>
+    </ul>
+</div>

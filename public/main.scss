@@ -1,0 +1,310 @@
+$bottom-shadow: rgba(0, 0, 0, 0.3);
+$primary-color: rgba(25, 118, 210, 1);
+$accent-color: rgba(245, 0, 87, 1);
+$accent-color-lower-opacity: rgba(245, 0, 87, 0.27);
+$header-font: rgba(255, 255, 255, 0.87);
+$content-font: rgba(0, 0, 0, 0.87);
+$detail-font: rgba(0, 0, 0, 0.57);
+
+@mixin liftable($resting-shadow) {
+    box-shadow: 0 2px $resting-shadow $bottom-shadow;
+    transition: transform 150ms;
+
+    &:not(.lifted):hover {
+        box-shadow: 0 2px $resting-shadow + 6 $bottom-shadow;
+        transform: scale(1.2);
+    }
+}
+
+@mixin pointer() {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+body {
+    margin: 0;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: $content-font;
+}
+
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+input[type="checkbox"] {
+    display: none;
+
+    & + label {
+        width: 2em;
+        height: 0.75em;
+        background: rgba(0, 0, 0, 0.27);
+        border-radius: 20px;
+        display: inline-block;
+        transition: all 250ms;
+        @include pointer();
+
+        &::before {
+            width: 1em;
+            height: 1em;
+            border-radius: 50%;
+            display: inline-block;
+            content: '';
+            background: rgba(253, 253, 253, 1);
+            position: relative;
+            top: -0.125em;
+            left: 0.5em;
+            transition: all 250ms;
+            box-shadow: 0 2px 2px $bottom-shadow;
+        }
+    }
+
+    &:checked + label {
+        background: $accent-color-lower-opacity;
+
+        &::before {
+            left: 20px;
+            background: $accent-color;
+        }
+    }
+}
+
+.button-flat {
+    color: $accent-color;
+    @include pointer();
+}
+
+.button {
+    color: $header-font;
+    background: $accent-color;
+    border-radius: 2px;
+    box-shadow: 0 2px 2px $bottom-shadow;
+    @include pointer();
+}
+
+.spinner {
+    animation: rotate 1s linear infinite;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    border: {
+        top: 2px solid rgba(0, 0, 0, 0.3);
+        bottom: 2px solid rgba(0, 0, 0, 0.3);
+        left: 2px solid rgba(0, 0, 0, 0.3);
+        right: 2px solid $accent-color;
+        radius: 50%;
+    }
+}
+
+.navbar {
+    width: 100%;
+    height: 64px;
+    box-shadow: 0 2px 5px $bottom-shadow;
+    background: $primary-color;
+    padding: 0 16px;
+    position: fixed;
+    color: $header-font;
+
+    .header-right {
+        float: right;
+    }
+
+    .header-button {
+        border: none;
+        background: rgba(0, 0, 0, 0);
+        height: 100%;
+        display: inline-block;
+
+        i {
+            @include pointer();
+        }
+    }
+
+    .button-shelf {
+        padding: 23px;
+        font-size: 20px;
+    }
+
+    .button-exit {
+        padding: 20px;
+        font-size: 24px;
+    }
+
+    .title {
+        font-size: 20px;
+    }
+}
+
+.scan-button {
+    background: $accent-color;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    @include liftable(6px);
+
+    i {
+        color: white;
+        font-size: 2em;
+        line-height: 56px;
+    }
+}
+
+.scan-modal {
+    box-shadow: 0 2px 24px $bottom-shadow;
+    padding: 24px;
+    display: none;
+    position: absolute;
+    border-radius: 2px;
+    width: 400px;
+    height: 400px;
+    background: white;
+
+    .header {
+        color: $detail-font;
+        font-size: 2em;
+    }
+
+    ul {
+        list-style-type: none;
+
+        li {
+            margin: 1.5em auto;
+            font-size: 1.2em;
+            animation: appear 150ms linear;
+
+            .detail {
+                font-size: 0.75em;
+                color: $detail-font;
+                padding: 0 8px;
+            }
+        }
+    }
+
+    i {
+        padding: 0 16px;
+    }
+}
+
+.form-login {
+    margin: 0 auto;
+    width: 400px;
+    height: 400px;
+    display: none;
+    box-shadow: 0 2px 24px $bottom-shadow;
+    padding: 16px;
+
+    input, button {
+        display: block;
+        margin: 10px auto;
+        width: 200px;
+    }
+
+    button {
+        border: none;
+    }
+}
+
+.card-container {
+    height: 100%;
+    background: #fafafa;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 80px 0 0 0;
+
+    .card {
+        background: white;
+        width: 20%;
+        height: 30%;
+        border-radius: 2px;
+        margin: 0 16px;
+        position: relative;
+        animation: appear 200ms;
+        @include liftable(2px);
+
+        
+        .card-header {
+            background: $primary-color;
+            width: 100%;
+            height: 1.5em;
+            font-size: 1.2em;
+            padding: 0 16px;
+            color: $header-font;
+            line-height: 1.5em;
+            border: {
+                top-right-radius: inherit;
+                top-left-radius: inherit;
+            };
+        }
+        /*
+        .card-header {
+            font-size: 2em;
+            color: $primary-color;
+            padding: 0 16px;
+        }
+        */
+
+        .card-content {
+            padding: 24px 0;
+
+            .row {
+                margin: 0.5em auto;
+            }
+
+            .content-detail {
+                overflow: scroll;
+                border-top: 1px solid rgba(0, 0, 0, 0.1);
+                display: none;
+                padding: 24px;
+
+                input[type="checkbox"] + label{
+                    float: right;
+                }
+            }
+
+            .label, .content {
+                width: 45%;
+                display: inline-block;
+                padding: 0 16px;
+            }
+
+            .label {
+                font-size: 1.1em;
+                color: $detail-font;
+                text-align: end;
+            }
+        }
+
+        .card-footer {
+            position: absolute;
+            bottom: 1em;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            padding: 0 16px;
+            line-height: 2em;
+            width: 100%;
+        }
+
+    }
+}

@@ -1,0 +1,1 @@
+var app = angular.module('ble-web-ui', ['ui.router']);
