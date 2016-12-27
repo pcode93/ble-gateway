@@ -1,31 +1,33 @@
-<div id="board" class="card-container">
+<div id="board" class="full card-container">
     <div ng-repeat="peripheral in peripherals" class="card" ng-click="show($event)">
         <div class="card-header">
             <span>{{peripheral.name}}</span>
         </div>
         <div class="card-content">
-            <div class="row">
-                <div class="label">
-                    RSSI
+            <div class="content-header">
+                <div class="row">
+                    <div class="label">
+                        RSSI
+                    </div>
+                    <div class="content">
+                        {{peripheral.rssi}}
+                    </div>
                 </div>
-                <div class="content">
-                    {{peripheral.rssi}}
+                <div class="row">
+                    <div class="label">
+                        MAC
+                    </div>
+                    <div class="content">
+                        {{peripheral.mac}}
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="label">
-                    MAC
-                </div>
-                <div class="content">
-                    {{peripheral.mac}}
-                </div>
-            </div>
-            <div class="row">
-                <div class="label">
-                    Protocol
-                </div>
-                <div class="content">
-                    {{peripheral.protocol}}
+                <div class="row">
+                    <div class="label">
+                        Protocol
+                    </div>
+                    <div class="content">
+                        {{peripheral.protocol}}
+                    </div>
                 </div>
             </div>
             <div class="row content-detail">
@@ -36,7 +38,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <span class="button-flat" ng-click="connected(peripheral)">{{peripheral.connected ? 'DISCONNECT' : 'CONNECT'}}</span>
+            <span class="button-flat" ng-click="connect(peripheral, $event)">{{peripheral.connected ? 'DISCONNECT' : 'CONNECT'}}</span>
         </div>
     </div>
 </div>

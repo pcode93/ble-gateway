@@ -8,17 +8,14 @@ $detail-font: rgba(0, 0, 0, 0.57);
 
 @mixin liftable($resting-shadow) {
     box-shadow: 0 2px $resting-shadow $bottom-shadow;
-    transition: transform 150ms;
+
+    &:not(.lifted) {
+        transition: transform 150ms;
+    }
 
     &:not(.lifted):hover {
         box-shadow: 0 2px $resting-shadow + 6 $bottom-shadow;
         transform: scale(1.2);
-    }
-}
-
-@mixin pointer() {
-    &:hover {
-        cursor: pointer;
     }
 }
 
@@ -38,6 +35,11 @@ $detail-font: rgba(0, 0, 0, 0.57);
     100% {
         opacity: 1;
     }
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
 }
 
 body {
@@ -60,7 +62,7 @@ input[type="checkbox"] {
         border-radius: 20px;
         display: inline-block;
         transition: all 250ms;
-        @include pointer();
+        cursor: pointer;
 
         &::before {
             width: 1em;
@@ -87,9 +89,14 @@ input[type="checkbox"] {
     }
 }
 
+.full {
+    height: 100%;
+    width: 100%;
+}
+
 .button-flat {
     color: $accent-color;
-    @include pointer();
+    cursor: pointer;
 }
 
 .button {
@@ -97,7 +104,7 @@ input[type="checkbox"] {
     background: $accent-color;
     border-radius: 2px;
     box-shadow: 0 2px 2px $bottom-shadow;
-    @include pointer();
+    cursor: pointer;
 }
 
 .spinner {
@@ -134,7 +141,7 @@ input[type="checkbox"] {
         display: inline-block;
 
         i {
-            @include pointer();
+            cursor: pointer;
         }
     }
 
@@ -227,24 +234,22 @@ input[type="checkbox"] {
 }
 
 .card-container {
-    height: 100%;
     background: #fafafa;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
+    align-items: flex-start;
     padding: 80px 0 0 0;
 
     .card {
         background: white;
-        width: 20%;
-        height: 30%;
         border-radius: 2px;
         margin: 0 16px;
         position: relative;
+        min-width: 20%;
         animation: appear 200ms;
         @include liftable(2px);
 
-        
         .card-header {
             background: $primary-color;
             width: 100%;
@@ -258,26 +263,25 @@ input[type="checkbox"] {
                 top-left-radius: inherit;
             };
         }
-        /*
-        .card-header {
-            font-size: 2em;
-            color: $primary-color;
-            padding: 0 16px;
-        }
-        */
 
         .card-content {
             padding: 24px 0;
+            height: 90%;
 
             .row {
                 margin: 0.5em auto;
             }
 
+            .content-header {
+                height: 20%;
+            }
+
             .content-detail {
+                height: 80%;
                 overflow: scroll;
                 border-top: 1px solid rgba(0, 0, 0, 0.1);
                 display: none;
-                padding: 24px;
+                padding: 2em;
 
                 input[type="checkbox"] + label{
                     float: right;
@@ -298,13 +302,22 @@ input[type="checkbox"] {
         }
 
         .card-footer {
-            position: absolute;
-            bottom: 1em;
+            height: 2em;
+            line-height: 2em;
             border-top: 1px solid rgba(0, 0, 0, 0.1);
             padding: 0 16px;
-            line-height: 2em;
             width: 100%;
         }
 
+    }
+
+    .modal {
+        position: absolute;
+        box-shadow: 0 2px 24px rgba(0,0,0,0.3);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 50%;
+        height: 70%;
     }
 }

@@ -1,13 +1,14 @@
+<!DOCTYPE HTML>
 <html ng-app="ble-web-ui">
     <head>
         <meta charset="utf-8">
-        <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="styles/main.css">
 
-        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="lib/jquery/dist/jquery.min.js"></script>
 
-        <script src="bower_components/angular/angular.min.js"></script>
-        <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+        <script src="lib/angular/angular.min.js"></script>
+        <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
 
         <script src="app.init.js"></script>
         <script src="app.routing.js"></script>
@@ -17,6 +18,6 @@
         <script src="components/board/board.ctrl.js"></script>
     </head>
     <body>
-        <div ui-view></div>
+        <div class="full" ui-view></div>
     </body>
 </html>

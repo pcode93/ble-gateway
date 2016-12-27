@@ -96,7 +96,9 @@ app.controller('boardController', function($state, $scope, $http) {
         $http.put('api/peripherals/' + peripheral.id + '/' + char.uuid + '/active', +char.active);
     }
 
-    $scope.connect = function(peripheral) {
+    $scope.connect = function(peripheral, event) {
+        event.stopPropagation();
+
         peripheral.connected = !peripheral.connected;
         $http.put('api/peripherals/' + peripheral.id + '/connected', +peripheral.connected)
     }
@@ -123,47 +125,40 @@ app.controller('boardController', function($state, $scope, $http) {
 
     $scope.show = function(e) {
         var card = angular.element(e.currentTarget),
-            height = card.height() * 2.5,
-            width = card.width() * 2.5,
             modal = function() {
                 card
-                    .css({
-                        'box-shadow': '0 2px 24px rgba(0,0,0,0.3)',
-                        position: 'absolute',
-                    })
+                    .addClass('modal')
                     .addClass('lifted')
+                    .find('.content-detail')
+                    .show();
+
+                card
                     .animate({
-                        top: card.parent().height()/2 - height/2,
-                        left: card.parent().width()/2 - width/2,
-                        height: height,
-                        width: width
-                    }, 150, function() {
-                        card.find('.content-detail').show();
-                    })
-                    .parent().click(function(event) {
+                        opacity: 1
+                    }, 200)
+                    .parent()
+                    .click(function(event) {
                         if(cardInModal && event.target !== e.currentTarget) {
-                            card.animate({
-                                top: 0,
-                                left: 0,
-                                width: width/2.5,
-                                height: height/2.5
-                            }, 150, function() {
-                                card
-                                    .css({
-                                        'box-shadow': '',
-                                        position: ''
-                                    })
-                                    .find('.content-detail')
-                                    .hide();
+                            card
+                                .animate({
+                                    opacity: 0
+                                }, 200, function() {
+                                    card
+                                        .removeClass('modal')
+                                        .find('.content-detail')
+                                        .hide();
 
-                                angular.element('.card').animate({
-                                    opacity: 1
-                                }, 200);
+                                    angular.element('.card').animate({
+                                        opacity: 1
+                                    }, 200, function() {
+                                        cardInModal = null;
 
-                                cardInModal = null;
-                                card.parent().off('click');
-                                card.removeClass('lifted');
-                            })
+                                        card
+                                            .removeClass('lifted')
+                                            .parent()
+                                            .off('click');
+                                    });
+                                })
                         }
                     })
             }
@@ -173,13 +168,9 @@ app.controller('boardController', function($state, $scope, $http) {
         if(!cardInModal) {
             var allCards = angular.element('.card');
 
-            if(allCards.length > 1) { 
-                allCards.not(card[0]).animate({
-                    opacity: 0
-                }, 200, modal)
-            } else {
-                modal();
-            }
+            angular.element('.card').animate({
+                opacity: 0
+            }, 200, modal)
 
             cardInModal = card;
         }
