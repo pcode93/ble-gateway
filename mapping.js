@@ -108,14 +108,18 @@ module.exports = {
         
         if(dev) {
             dev.disconnect((err) => {
-                for(var path of paths.keys().filter((el) => el.startsWith('/' + dev.id))) {
-                    paths.delete(path);
+                for(var path of paths.keys()) {
+                    path.startsWith('/' + dev.id) && paths.delete(path);
                 }
 
                 connected.splice(connected.indexOf(dev), 1);
             });
         }
     },
+
+    connected: (id) => !!connected.find(findByIdCallback(id)),
+
+    discovered: (id) => !!discovered.find(findByIdCallback(id)),
 
     activate: (peripheralId, char) => {
         var dev = connected.find(findByIdCallback(peripheralId));
@@ -140,6 +144,7 @@ module.exports = {
     }),
 
     scan: () => new Promise((resolve, reject) => {
+        discovered = [];
         ble.startScanning();
 
         setTimeout(() => {

@@ -37,7 +37,14 @@ router.prefix('/api')
     })
 
     .get('/peripherals', function*(next) {
-        this.body = yield peripherals.find().toArray();
+        var allPeripherals = yield peripherals.find().toArray();
+
+        allPeripherals.forEach((dev) => {
+            dev.discovered = mapping.discovered(dev.id)
+            dev.discovered = mapping.connected(dev.id)
+        });
+
+        this.body = allPeripherals;
     })
 
     .post('/peripherals', function*(next) {
@@ -54,7 +61,7 @@ router.prefix('/api')
             chars = yield mapping.discover(id),
             dev = yield find(id);
 
-        Object.keys(chars).forEach((char) => dev.chars[char] = dev.chars[char] || {
+        Object.keys(chars).forEach((char) => dev.chars[char] = {
             uuid: char,
             name: chars[char].name,
             active: true
@@ -74,7 +81,9 @@ router.prefix('/api')
     .put('/peripherals/:id/connected', function*(next) {
         var dev = yield find(this.params.id);
 
-        mapping[+this.request.body ? 'connect' : 'disconnect'](dev.id, dev.chars);
+        mapping[+this.request.body.connected ? 'connect' : 'disconnect'](dev.id, dev.chars);
+
+        this.status = 200
     })
 
     .put('/peripherals/:id/:char/active', function*(next) {

@@ -5,9 +5,6 @@ app.controller('boardController', function($state, $scope, $http) {
     (function() {
         $http.get('api/peripherals').then(function(res) {
             $scope.peripherals = res.data || [];
-            $scope.peripherals.forEach(function(peripheral) {
-                peripheral.connected = true;
-            });
         });
     })();
 
@@ -100,7 +97,7 @@ app.controller('boardController', function($state, $scope, $http) {
         event.stopPropagation();
 
         peripheral.connected = !peripheral.connected;
-        $http.put('api/peripherals/' + peripheral.id + '/connected', +peripheral.connected)
+        $http.put('api/peripherals/' + peripheral.id + '/connected', {connected: +peripheral.connected})
     }
 
     $scope.scan = function() {
